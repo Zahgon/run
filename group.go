@@ -18,43 +18,23 @@ type Group struct {
 //
 // The first actor (function) to return interrupts all running actors.
 // The error is passed to the interrupt functions, and is returned by Run.
-func (g *Group) Add(execute func() error, interrupt func(error)) {
-	g.actors = append(g.actors, actor{execute, interrupt})
-}
+func (g *Group) Add(execute func() error, interrupt func(error)) { _ = "STUB: not implemented"; return }
 
 // Run all actors (functions) concurrently.
 // When the first actor returns, all others are interrupted.
 // Run only returns when all actors have exited.
 // Run returns the error returned by the first exiting actor.
-func (g *Group) Run() error {
-	if len(g.actors) == 0 {
-		return nil
-	}
+func (g *Group) Run() error { _ = "STUB: not implemented"; return nil }
 
-	// Run each actor.
-	errors := make(chan error, len(g.actors))
-	for _, a := range g.actors {
-		go func(a actor) {
-			errors <- a.execute()
-		}(a)
-	}
+// Run each actor.
 
-	// Wait for the first actor to stop.
-	err := <-errors
+// Wait for the first actor to stop.
 
-	// Signal all actors to stop.
-	for _, a := range g.actors {
-		a.interrupt(err)
-	}
+// Signal all actors to stop.
 
-	// Wait for all actors to stop.
-	for i := 1; i < cap(errors); i++ {
-		<-errors
-	}
+// Wait for all actors to stop.
 
-	// Return the original error.
-	return err
-}
+// Return the original error.
 
 type actor struct {
 	execute   func() error
